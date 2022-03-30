@@ -1,6 +1,8 @@
 <?php
 namespace WapplerSystems\Cleverreach\Powermail\Validator;
 
+use WapplerSystems\Cleverreach\CleverReach\Api;
+
 /**
  * This file is part of the "cleverreach" Extension for TYPO3 CMS.
  *
@@ -12,11 +14,12 @@ namespace WapplerSystems\Cleverreach\Powermail\Validator;
 class OptoutValidator
 {
 
-    /**
-     * @var \WapplerSystems\Cleverreach\CleverReach\Api
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $api;
+    protected Api $api;
+
+    public function __construct(Api $api)
+    {
+        $this->api = $api;
+    }
 
     /**
      * Check if given number is higher than in configuration

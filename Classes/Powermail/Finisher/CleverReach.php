@@ -11,40 +11,15 @@ namespace WapplerSystems\Cleverreach\Powermail\Finisher;
 
 use In2code\Powermail\Domain\Model\Answer;
 use In2code\Powermail\Domain\Model\Mail;
+use In2code\Powermail\Domain\Repository\MailRepository;
 use In2code\Powermail\Finisher\AbstractFinisher;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use WapplerSystems\Cleverreach\CleverReach\Api;
 use WapplerSystems\Cleverreach\Domain\Model\Receiver;
+use WapplerSystems\Cleverreach\Service\ConfigurationService;
 
 class CleverReach extends AbstractFinisher
 {
-
-    /**
-     * @var \WapplerSystems\Cleverreach\CleverReach\Api
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $api;
-
-
-    /**
-     * @var \In2code\Powermail\Domain\Repository\MailRepository
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $mailRepository;
-
-
-
-    /**
-     * Because of T3 7 compatibility use this class
-     * @var \TYPO3\CMS\Extbase\Service\TypoScriptService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $typoScriptService;
-
-
-    /**
-     * @var array
-     */
-    protected $dataArray = [];
 
 
     /**
@@ -57,15 +32,26 @@ class CleverReach extends AbstractFinisher
      * @var string
      */
     protected $name = '';
+    private Api $api;
+    private TypoScriptService $typoScriptService;
+    private ConfigurationService $configurationService;
 
 
-    /**
-     * @var \WapplerSystems\Cleverreach\Service\ConfigurationService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $configurationService;
-    
-    
+    public function injectApi(Api $api)
+    {
+        $this->api = $api;
+    }
+
+    public function injectTypoScriptService(TypoScriptService $typoScriptService)
+    {
+        $this->typoScriptService = $typoScriptService;
+    }
+
+    public function injectConfigurationService(ConfigurationService $configurationService)
+    {
+        $this->configurationService = $configurationService;
+    }
+
     /**
      *
      * @return void
@@ -121,7 +107,7 @@ class CleverReach extends AbstractFinisher
     /**
      * Initialize
      */
-    public function initializeFinisher()
+    public function initializeFinisher(): void
     {
         $configuration = $this->typoScriptService->convertPlainArrayToTypoScriptArray($this->settings);
         if (!empty($configuration['dbEntry.'])) {

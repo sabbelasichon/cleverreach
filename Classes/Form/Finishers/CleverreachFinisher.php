@@ -28,7 +28,6 @@ class CleverreachFinisher extends AbstractFinisher
 
     /**
      * @var \WapplerSystems\Cleverreach\CleverReach\Api
-     * @TYPO3\CMS\Extbase\Annotation\Inject
      */
     protected $api;
 
@@ -39,6 +38,13 @@ class CleverreachFinisher extends AbstractFinisher
     protected $defaultOptions = [
     ];
 
+    private ConfigurationService $configurationService;
+
+    public function __construct(Api $api, ConfigurationService $configurationService)
+    {
+        $this->api = $api;
+        $this->configurationService = $configurationService;
+    }
 
     /**
      * Executes this finisher
@@ -51,9 +57,7 @@ class CleverreachFinisher extends AbstractFinisher
 
         $formValues = $this->getFormValues();
 
-        /** @var ConfigurationService $configurationService */
-        $configurationService = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationService::class);
-        $configuration = $configurationService->getConfiguration();
+        $configuration = $this->configurationService->getConfiguration();
 
 
         $groupId = isset($this->options['groupId']) && \strlen($this->options['groupId']) > 0 ? $this->options['groupId'] : $configuration['groupId'];

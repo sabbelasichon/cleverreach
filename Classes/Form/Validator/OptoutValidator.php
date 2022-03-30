@@ -17,6 +17,7 @@ namespace WapplerSystems\Cleverreach\Form\Validator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
+use WapplerSystems\Cleverreach\CleverReach\Api;
 use WapplerSystems\Cleverreach\Service\ConfigurationService;
 
 /**
@@ -28,11 +29,15 @@ class OptoutValidator extends AbstractValidator
 {
 
 
-    /**
-     * @var \WapplerSystems\Cleverreach\CleverReach\Api
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $api;
+    private Api $api;
+
+    private ConfigurationService $configurationService;
+
+    public function __construct(Api $api, ConfigurationService $configurationService)
+    {
+        $this->api = $api;
+        $this->configurationService = $configurationService;
+    }
 
 
     /**
@@ -44,9 +49,7 @@ class OptoutValidator extends AbstractValidator
     public function isValid($value)
     {
 
-        /** @var ConfigurationService $configurationService */
-        $configurationService = GeneralUtility::makeInstance(ObjectManager::class)->get(ConfigurationService::class);
-        $configuration = $configurationService->getConfiguration();
+        $configuration = $this->configurationService->getConfiguration();
 
         $groupId = isset($this->options['groupId']) && \strlen($this->options['groupId']) > 0 ? $this->options['groupId'] : $configuration['groupId'];
 

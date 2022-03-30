@@ -10,9 +10,9 @@ namespace WapplerSystems\Cleverreach\CleverReach;
  */
 
 
-use TYPO3\CMS\Core\Log\LogManager;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Log\LoggerInterface;
 use WapplerSystems\Cleverreach\Domain\Model\Receiver;
+use WapplerSystems\Cleverreach\Service\ConfigurationService;
 use WapplerSystems\Cleverreach\Tools\Rest;
 
 
@@ -20,30 +20,25 @@ class Api
 {
 
 
-    /**
-     * @var \WapplerSystems\Cleverreach\Service\ConfigurationService
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $configurationService;
+    protected ConfigurationService $configurationService;
 
 
     /** @var Rest */
     protected $rest;
 
 
-    /** @var \TYPO3\CMS\Core\Log\Logger */
-    protected $logger;
-
-
     const MODE_OPTIN = 'optin';
 
     const MODE_OPTOUT = 'optout';
 
+    private LoggerInterface $logger;
 
-    public function __construct()
+
+    public function __construct(LoggerInterface $logger, ConfigurationService $configurationService)
     {
 
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->logger = $logger;
+        $this->configurationService = $configurationService;
     }
 
 

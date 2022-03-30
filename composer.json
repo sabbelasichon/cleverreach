@@ -5,7 +5,7 @@
     "homepage": "https://wappler.systems",
     "license": "GPL-2.0-or-later",
     "require": {
-        "typo3/cms-core": "^9.5 || ^10.4 || ^11.5"
+        "typo3/cms-core": "^10.4 || ^11.5"
     },
     "replace": {
     },
@@ -18,5 +18,8 @@
         "typo3/cms": {
             "extension-key": "cleverreach"
         }
+    },
+    "require-dev": {
+        "in2code/powermail": "^9.0"
     }
 }

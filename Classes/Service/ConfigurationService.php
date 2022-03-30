@@ -16,19 +16,17 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
  */
 class ConfigurationService {
 
+    private ConfigurationManagerInterface $configurationManager;
 
-    /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $objectManager;
+    public function __construct(ConfigurationManagerInterface $configurationManager)
+    {
+        $this->configurationManager = $configurationManager;
+    }
 
 
     public function getConfiguration() {
 
-        /** @var ConfigurationManagerInterface $configurationManager */
-        $configurationManager = $this->objectManager->get(ConfigurationManagerInterface::class);
-        $settings = $configurationManager->getConfiguration(
+        $settings = $this->configurationManager->getConfiguration(
             ConfigurationManagerInterface::CONFIGURATION_TYPE_FULL_TYPOSCRIPT,
             'cleverreach'
         );

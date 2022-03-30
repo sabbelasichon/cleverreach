@@ -10,15 +10,17 @@ namespace WapplerSystems\Cleverreach\Powermail\Validator;
 
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use WapplerSystems\Cleverreach\CleverReach\Api;
 
 class OptinValidator
 {
 
-    /**
-     * @var \WapplerSystems\Cleverreach\CleverReach\Api
-     * @TYPO3\CMS\Extbase\Annotation\Inject
-     */
-    protected $api;
+    protected Api $api;
+
+    public function __construct(Api $api)
+    {
+        $this->api = $api;
+    }
 
     /**
      * Check if given number is higher than in configuration
